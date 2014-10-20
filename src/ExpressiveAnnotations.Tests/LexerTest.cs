@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Linq;
 using ExpressiveAnnotations.Analysis;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -8,6 +9,13 @@ namespace ExpressiveAnnotations.Tests
     [TestClass]
     public class LexerTest
     {
+
+        [TestInitialize]
+        public void Init()
+        {
+            System.Threading.Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo("en-US");
+        }
+
         [TestMethod]
         public void verify_complex_expression_analysis()
         {
@@ -140,7 +148,7 @@ namespace ExpressiveAnnotations.Tests
                 Assert.IsTrue(e is ParseErrorException);
                 Assert.AreEqual("Invalid token.", e.Message);
 
-                var ctx = ((ParseErrorException) e).Location;
+                var ctx = ((ParseErrorException)e).Location;
                 Assert.AreEqual(1, ctx.Line);
                 Assert.AreEqual(6, ctx.Column);
             }
@@ -155,7 +163,7 @@ namespace ExpressiveAnnotations.Tests
                 Assert.IsTrue(e is ParseErrorException);
                 Assert.AreEqual("Invalid token.", e.Message);
 
-                var ctx = ((ParseErrorException) e).Location;
+                var ctx = ((ParseErrorException)e).Location;
                 Assert.AreEqual(2, ctx.Line);
                 Assert.AreEqual(4, ctx.Column);
             }
@@ -170,7 +178,7 @@ namespace ExpressiveAnnotations.Tests
                 Assert.IsTrue(e is ParseErrorException);
                 Assert.AreEqual("Invalid token.", e.Message);
 
-                var ctx = ((ParseErrorException) e).Location;
+                var ctx = ((ParseErrorException)e).Location;
                 Assert.AreEqual(1, ctx.Line);
                 Assert.AreEqual(12, ctx.Column);
             }

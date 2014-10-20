@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using ExpressiveAnnotations.Analysis;
 using ExpressiveAnnotations.Attributes;
@@ -16,7 +17,7 @@ namespace ExpressiveAnnotations.Tests
             High,
             Low,
             Uncertain
-        }        
+        }
     }
 
     internal enum Stability
@@ -84,6 +85,12 @@ namespace ExpressiveAnnotations.Tests
             Uncertain,
         }
 
+        [TestInitialize]
+        public void Init()
+        {
+            System.Threading.Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo("en-US");
+        }
+
         [TestMethod]
         public void verify_logic_without_context()
         {
@@ -129,7 +136,7 @@ namespace ExpressiveAnnotations.Tests
             Assert.IsTrue(parser.Parse<object>("0 >= 0").Invoke(null));
             Assert.IsTrue(parser.Parse<object>("0 <= 0").Invoke(null));
 
-            Assert.IsTrue(parser.Parse<object>("0 == 0").Invoke(null));            
+            Assert.IsTrue(parser.Parse<object>("0 == 0").Invoke(null));
 
             Assert.IsFalse(parser.Parse<object>("0 == 1").Invoke(null));
             Assert.IsTrue(parser.Parse<object>("-1 == -1").Invoke(null));
@@ -459,7 +466,7 @@ namespace ExpressiveAnnotations.Tests
         public void verify_short_circuit_evaluation()
         {
             var parser = new Parser();
-            parser.AddFunction<object, bool>("CastToBool", obj => (bool) obj);
+            parser.AddFunction<object, bool>("CastToBool", obj => (bool)obj);
 
             try
             {
@@ -918,7 +925,7 @@ namespace ExpressiveAnnotations.Tests
     ^--- Operator '!' cannot be applied to operand of type 'System.DateTime'.",
                     e.Message);
             }
-        }        
+        }
 
         private class Model
         {
@@ -998,7 +1005,7 @@ namespace ExpressiveAnnotations.Tests
             {
                 Vehicle = Vehicle.Car;
 
-                Assert.IsTrue(0 == (int) Vehicle.Car);
+                Assert.IsTrue(0 == (int)Vehicle.Car);
                 Assert.IsTrue(Vehicle == Vehicle.Car);
             }
 
@@ -1009,10 +1016,10 @@ namespace ExpressiveAnnotations.Tests
         {
             public SampleTwo()
             {
-                Vehicle = new Carriage {Car = -1};
+                Vehicle = new Carriage { Car = -1 };
 
                 Assert.IsTrue(-1 == Vehicle.Car);
-                Assert.IsTrue(Vehicle.Car != (int) ParserTest.Vehicle.Car);
+                Assert.IsTrue(Vehicle.Car != (int)ParserTest.Vehicle.Car);
             }
 
             public Carriage Vehicle { get; set; }
